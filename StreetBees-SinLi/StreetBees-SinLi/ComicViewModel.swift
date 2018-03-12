@@ -11,24 +11,22 @@ import RxSwift
 import RxDataSources
 import Alamofire
 
+typealias ComicSection = AnimatableSectionModel<String, ComicViewModel>
+
 class ComicViewModel {    
     let disposeBag = DisposeBag()
     var title = Variable("")
     var thumbnailImage = Variable<UIImage?>(nil)
+    var description = ""
+
     var thumbnailPath = "" {
-        didSet {
-            Alamofire.request("\(thumbnailPath).jpg").responseData { (response) in
+        didSet(newValue) {
+            Alamofire.request("\(newValue).jpg").responseData { (response) in
                 if let imageData = response.data {
                     self.thumbnailImage.value = UIImage(data: imageData)
-                }
-                
-                print(response.response?.statusCode)
+                }                
             }
         }
-    }
-
-    init() {
-        
     }
 }
 

@@ -10,6 +10,8 @@
 		B989DFAA2055E80500D10B74 /* ComicCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B989DFA82055E80500D10B74 /* ComicCollectionViewCell.swift */; };
 		B989DFAB2055E80500D10B74 /* ComicCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = B989DFA92055E80500D10B74 /* ComicCollectionViewCell.xib */; };
 		B989DFAD2055E93000D10B74 /* ComicViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B989DFAC2055E93000D10B74 /* ComicViewModel.swift */; };
+		B989DFB02056823B00D10B74 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B989DFAE2056823B00D10B74 /* DetailViewController.swift */; };
+		B989DFB12056823B00D10B74 /* DetailViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = B989DFAF2056823B00D10B74 /* DetailViewController.xib */; };
 		B9910AFF205195A000C8C0F1 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9910AFE205195A000C8C0F1 /* AppDelegate.swift */; };
 		B9910B01205195A000C8C0F1 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B9910B00205195A000C8C0F1 /* ViewController.swift */; };
 		B9910B04205195A000C8C0F1 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B9910B02205195A000C8C0F1 /* Main.storyboard */; };
@@ -23,6 +25,8 @@
 		B989DFA82055E80500D10B74 /* ComicCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComicCollectionViewCell.swift; sourceTree = "<group>"; };
 		B989DFA92055E80500D10B74 /* ComicCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = ComicCollectionViewCell.xib; sourceTree = "<group>"; };
 		B989DFAC2055E93000D10B74 /* ComicViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ComicViewModel.swift; sourceTree = "<group>"; };
+		B989DFAE2056823B00D10B74 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		B989DFAF2056823B00D10B74 /* DetailViewController.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = DetailViewController.xib; sourceTree = "<group>"; };
 		B9910AFB205195A000C8C0F1 /* StreetBees-SinLi.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "StreetBees-SinLi.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B9910AFE205195A000C8C0F1 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B9910B00205195A000C8C0F1 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -90,6 +94,8 @@
 				B989DFAC2055E93000D10B74 /* ComicViewModel.swift */,
 				B989DFA82055E80500D10B74 /* ComicCollectionViewCell.swift */,
 				B989DFA92055E80500D10B74 /* ComicCollectionViewCell.xib */,
+				B989DFAE2056823B00D10B74 /* DetailViewController.swift */,
+				B989DFAF2056823B00D10B74 /* DetailViewController.xib */,
 				B9910B02205195A000C8C0F1 /* Main.storyboard */,
 				B9910B05205195A000C8C0F1 /* Assets.xcassets */,
 				B9910B07205195A000C8C0F1 /* LaunchScreen.storyboard */,
@@ -164,6 +170,7 @@
 			files = (
 				B9910B09205195A000C8C0F1 /* LaunchScreen.storyboard in Resources */,
 				B9910B06205195A000C8C0F1 /* Assets.xcassets in Resources */,
+				B989DFB12056823B00D10B74 /* DetailViewController.xib in Resources */,
 				B989DFAB2055E80500D10B74 /* ComicCollectionViewCell.xib in Resources */,
 				B9910B04205195A000C8C0F1 /* Main.storyboard in Resources */,
 			);
@@ -226,6 +233,7 @@
 			files = (
 				B9910B01205195A000C8C0F1 /* ViewController.swift in Sources */,
 				B9910AFF205195A000C8C0F1 /* AppDelegate.swift in Sources */,
+				B989DFB02056823B00D10B74 /* DetailViewController.swift in Sources */,
 				B989DFAD2055E93000D10B74 /* ComicViewModel.swift in Sources */,
 				B989DFAA2055E80500D10B74 /* ComicCollectionViewCell.swift in Sources */,
 			);

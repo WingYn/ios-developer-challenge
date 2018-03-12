@@ -19,7 +19,6 @@ class ComicCollectionViewCell: UICollectionViewCell {
             comicViewModel.thumbnailImage.asDriver().drive(onNext: { (image) in
                 self.comicThumbnailImageView.image = image
             }).disposed(by: disposeBag)
-//            comicViewModel.thumbnailImage.asDriver().drive(comicThumbnailImageView.rx.image).disposed(by: disposeBag)
         }
     }
     

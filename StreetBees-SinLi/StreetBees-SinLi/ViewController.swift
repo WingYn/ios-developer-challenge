@@ -31,7 +31,7 @@ class ViewController: UIViewController {
         return digestData
     }
     
-    func authDigest() -> [String: String] {
+    func authDigest() -> Parameters {
         let date = "\(Date().timeIntervalSince1970)"
         let apiKey = "b2605892376329794f3ec39209433962"
         let privateKey = "6eedd31525a0eacc53959f9805aa096c9f0e6137"
@@ -48,15 +48,15 @@ class ViewController: UIViewController {
         
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         collectionView.backgroundColor = .white
-        collectionView.allowsMultipleSelection = true
         collectionView.delegate = self
-        collectionView.alwaysBounceVertical = true
         view.addSubview(collectionView)
         
-        collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor).isActive = true
-        collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor).isActive = true
-        collectionView.topAnchor.constraint(equalTo: view.topAnchor).isActive = true
-        collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor).isActive = true
+        let margin: CGFloat = 4
+        
+        collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: margin).isActive = true
+        collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -margin).isActive = true
+        collectionView.topAnchor.constraint(equalTo: view.topAnchor, constant: margin).isActive = true
+        collectionView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -margin).isActive = true
         
         let comicCollectionViewCellReuseIdentifier = "ComicCollectionViewCellReuseIdentifier"
         
@@ -67,57 +67,17 @@ class ViewController: UIViewController {
             configureCell: { (tvSectionedDataSource, collectionView, indexPath, comicViewModel) -> UICollectionViewCell in
                 let cell = collectionView.dequeueReusableCell(withReuseIdentifier: comicCollectionViewCellReuseIdentifier, for: indexPath) as! ComicCollectionViewCell
                 
-//                cell.thumbnailSize = CGSize(width: self.cellWidth, height: self.cellHeight)
                 cell.comicViewModel = comicViewModel
                 cell.comicThumbnailImageView.backgroundColor = .gray
                 
                 return cell
-        }, configureSupplementaryView: { (sectionedDataSource, collectionView, sectionTitle, indexPath) -> UICollectionReusableView in
+        }, configureSupplementaryView: { (_, _, _, _) -> UICollectionReusableView in
             return UICollectionReusableView()
         })
         
         comicSections.asObservable().bind(to: collectionView.rx.items(dataSource: tvAnimatedDataSource)).disposed(by: disposeBag)
-
-//        guard let url = URL(string: apiEndPoint) else { return }
-//        let urlRequest = URLRequest(url: url)
-//        let session = URLSession.shared
-//
-//        let task = session.dataTask(with: urlRequest) { (data, response, error) in
-//            guard error == nil else { return }
-//            guard let httpResponse = response as? HTTPURLResponse, httpResponse.statusCode == 200 else { return }
-//            guard let data = data else { return }
-//            guard let allData = try? JSONSerialization.jsonObject(with: data, options: []) as? [String: AnyObject] else { return }
-//            guard let comicsData = allData?["data"] as? [String: AnyObject] else { return }
-//            guard let comicsResults = comicsData["results"] as? [[String: AnyObject]] else { return }
-//            for comic in comicsResults {
-//                guard let thumbnail = comic["thumbnail"] as? [String: AnyObject] else { return }
-//                guard let path = thumbnail["path"] as? String else { return }
-//                print(path)
-//
-//                guard let thumbnailPath = URL(string: path) else { return }
-//                let thumbnailUrlRequest = URLRequest(url: thumbnailPath)
-//
-//                let thumbnailTask = URLSession.shared.dataTask(with: thumbnailUrlRequest) { (data, response, error) in
-//                    print(data)
-//                    print(response)
-//                }
-//
-//                thumbnailTask.resume()
-//            }
-//            print(comicsResults)
-//            for result in results {
-//                print(result)
-//                guard let keyString = key as? String else { return }
-//                guard let rate = remoteRates[key] as? Float else { return }
-//
-//                currentRates[keyString] = rate
-//            }
-//        }
-//        task.resume()
-
-        let parameters: Parameters = authDigest()
         
-        Alamofire.request("http://gateway.marvel.com/v1/public/comics", method: .get, parameters: parameters).responseJSON { (response) in
+        Alamofire.request("http://gateway.marvel.com/v1/public/comics", method: .get, parameters: authDigest()).responseJSON { (response) in
             if let alldata = response.result.value as? [String: Any] {
                 guard let comicsData = alldata["data"] as? [String: AnyObject] else { return }
                 guard let comicsResults = comicsData["results"] as? [[String: AnyObject]] else { return }
@@ -126,23 +86,25 @@ class ViewController: UIViewController {
                     if let title = comicJSON["title"] as? String {
                         comicViewModel.title.value = title
                     }
-                    guard let thumbnail = comicJSON["thumbnail"] as? [String: AnyObject] else { return }
-                    if let thumbnailPath = thumbnail["path"] as? String {
+                    if let thumbnail = comicJSON["thumbnail"] as? [String: AnyObject], let thumbnailPath = thumbnail["path"] as? String {
                         comicViewModel.thumbnailPath = thumbnailPath
                     }
                     
-//                    if let images = comicJSON["images"] as? NSArray {
-//                        print(images)
-//                    }
+                    if let description = comicJSON["description"] as? String {
+                        comicViewModel.description = description
+                    }
                     
                     self.comicViewModels.append(comicViewModel)
-//                    Alamofire.request(path, method: .get, parameters: parameters).responseData(completionHandler: { (response) in
-//                        print(response.data)
-//                    })
                 }
                 self.comicSections.value = [ComicSection(model: "", items: self.comicViewModels)]
             }
         }
+        
+        collectionView.rx.modelSelected(ComicViewModel.self).subscribe(onNext: { (comicViewModel) in
+            let detailViewController = DetailViewController()
+            detailViewController.comicViewModel = comicViewModel
+            self.present(detailViewController, animated: true, completion: .none)
+        }).disposed(by: disposeBag)
     }
 }
 
@@ -157,17 +119,11 @@ extension ViewController: UICollectionViewDelegateFlowLayout {
     }
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        let cellWidth = (view.bounds.size.width / 4)
+        let cellWidth = ((view.bounds.size.width - 20) / 4)
         let cellHeight = cellWidth * 1.5
         return CGSize(width: cellWidth, height: cellHeight)
     }
 }
 
-struct Comic {
-    var title = ""
-    var thumbnailPath = ""
-}
-
-typealias ComicSection = AnimatableSectionModel<String, ComicViewModel>
 
 
